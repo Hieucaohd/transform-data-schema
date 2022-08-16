@@ -46,6 +46,21 @@ class BaseSchemaTransform(Schema):
             return data_list_copy[0]
         return data_list_copy
 
+    @classmethod
+    def transform(
+        cls,
+        data: (
+            typing.Mapping[str, typing.Any]
+            | typing.Iterable[typing.Mapping[str, typing.Any]]
+        ),
+        *,
+        many: bool | None = False,
+        partial: bool | None = False,
+        unknown: str | None = None,
+    ):
+        instance = cls(many=many, partial=partial, unknown=unknown)
+        return instance.load(data)
+
     def dump(self, obj: typing.Any, *, many: bool | None = None):
         raise Exception('Method not use.')
 
