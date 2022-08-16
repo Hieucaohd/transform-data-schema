@@ -1,3 +1,6 @@
+import copy
+from pprint import pprint
+
 from marshmallow import Schema, pre_load
 from .custom_fields import NestedValueField
 from .utils import get_value_from_field, remove_none_field
@@ -12,6 +15,14 @@ class BaseSchemaTransform(Schema):
                     field_obj.nested_key if field_obj.nested_key is not None else attr_name
                 )
                 data[attr_name] = get_value_from_field(data, field_name, None)
+
+    def _return_type_class_for_nested_field(self):
+        load_fields_copy = copy.deepcopy(self.load_fields)
+        for attr_name, field_obj in self.load_fields.items():
+            if isinstance(field_obj, NestedValueField) and field_obj.type_class is not None:
+                attrs_of_field_obj = copy.deepcopy(field_obj.__dict__)
+                load_fields_copy[attr_name] = field_obj.type_class(**attrs_of_field_obj)
+        self.load_fields = load_fields_copy
 
     def pre_load_action(self, data, many, **kwargs):
         return data
@@ -29,6 +40,7 @@ class BaseSchemaTransform(Schema):
             self._get_value_for_nested_value_field(data_item)
             data_item = remove_none_field(data_item)
             data_list_copy.append(data_item)
+        self._return_type_class_for_nested_field()
 
         if not many:
             return data_list_copy[0]

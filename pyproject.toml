@@ -6,7 +6,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "transform-data-schema"
-version = "1.0.0"
+version = "1.2.0"
 description = "Define the shape and validate data"
 readme = "README.md"
 authors = [{ name = "Hieucaohd", email = "hieucaohd@gmail.com" }]

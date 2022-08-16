@@ -1,5 +1,5 @@
-from src.transform_data.base_schema import BaseSchemaTransform
-from src.transform_data.custom_fields import NestedValueField
+from src.transform_data_schema.base_schema import BaseSchemaTransform
+from src.transform_data_schema.custom_fields import NestedValueField
 from marshmallow import fields, EXCLUDE
 
 
@@ -8,9 +8,9 @@ class DogSchema(BaseSchemaTransform):
         unknown = EXCLUDE
 
     NAME = fields.Str(data_key='name')
-    ACTION_RUN = NestedValueField(nested_key='action.run')
-    ACTION_SOUND = NestedValueField(nested_key='action.sound.normal')
-    ACTION_SOUND_WHEN_HUNGRY = NestedValueField(nested_key='action.sound.hungry')
+    ACTION_RUN = NestedValueField(nested_key='action.run', type_class=fields.Str)
+    ACTION_SOUND_WHEN_NORMAL = NestedValueField(nested_key='action.sound.normal', type_class=fields.Str)
+    ACTION_SOUND_WHEN_HUNGRY = NestedValueField(nested_key='action.sound.hungry', type_class=fields.Str)
 
 
 class TestBaseSchemaTransform:
@@ -30,7 +30,7 @@ class TestBaseSchemaTransform:
         assert result == {
             'NAME': 'Husky',
             'ACTION_RUN': 'very fast',
-            'ACTION_SOUND': 'go go',
+            'ACTION_SOUND_WHEN_NORMAL': 'go go',
             'ACTION_SOUND_WHEN_HUNGRY': 'ya ya'
         }
 
