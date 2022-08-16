@@ -4,8 +4,6 @@ transform-data-schema: simple transform and validate schema
 
 **transform-data-schema** is a library for converting complex datatypes, such as objects, to and from native Python datatypes.
 
-.. code-block:: python
-
     from transform_data_schema import (
         BaseSchemaTransform, 
         EXCLUDE, 
@@ -94,8 +92,6 @@ In short, transform-data-schema can be used to:
 
 Get It Now
 ==========
-
-::
 
     $ pip install -U transform-data-schema
 
