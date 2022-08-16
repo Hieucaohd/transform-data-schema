@@ -1,6 +1,4 @@
-from src.transform_data_schema.base_schema import BaseSchemaTransform
-from src.transform_data_schema.custom_fields import NestedValueField
-from marshmallow import fields, EXCLUDE, ValidationError
+from src.transform_data_schema import BaseSchemaTransform, fields, transform_fields, EXCLUDE, ValidationError
 import pytest
 
 
@@ -9,9 +7,18 @@ class DogSchema(BaseSchemaTransform):
         unknown = EXCLUDE
 
     NAME = fields.Str(data_key='name')
-    ACTION_RUN = NestedValueField(nested_key='action.run', type_class=fields.Str)
-    ACTION_SOUND_WHEN_NORMAL = NestedValueField(nested_key='action.sound.normal', type_class=fields.Str)
-    ACTION_SOUND_WHEN_HUNGRY = NestedValueField(nested_key='action.sound.hungry', type_class=fields.Str)
+    ACTION_RUN = transform_fields.NestedValueField(
+        nested_key='action.run',
+        type_class=fields.Str
+    )
+    ACTION_SOUND_WHEN_NORMAL = transform_fields.NestedValueField(
+        nested_key='action.sound.normal',
+        type_class=fields.Str
+    )
+    ACTION_SOUND_WHEN_HUNGRY = transform_fields.NestedValueField(
+        nested_key='action.sound.hungry',
+        type_class=fields.Str
+    )
 
 
 class DogSchemaRequire(BaseSchemaTransform):
@@ -19,24 +26,24 @@ class DogSchemaRequire(BaseSchemaTransform):
         unknown = EXCLUDE
 
     NAME = fields.Str(data_key='name', required=True)
-    ACTION_RUN = NestedValueField(
+    ACTION_RUN = transform_fields.NestedValueField(
         nested_key='action.run',
         type_class=fields.Str,
         required=True
     )
-    ACTION_SOUND_WHEN_NORMAL = NestedValueField(
+    ACTION_SOUND_WHEN_NORMAL = transform_fields.NestedValueField(
         nested_key='action.sound.normal',
         type_class=fields.Str,
         required=True
     )
-    ACTION_SOUND_WHEN_HUNGRY = NestedValueField(
+    ACTION_SOUND_WHEN_HUNGRY = transform_fields.NestedValueField(
         nested_key='action.sound.hungry',
         type_class=fields.Str
     )
 
 
 class TestBaseSchemaTransform:
-    def test_result_of_load(self):
+    def test_result_of_transform(self):
         dog_raw_data = {
             'name': 'Husky',
             'action': {
@@ -55,7 +62,7 @@ class TestBaseSchemaTransform:
             'ACTION_SOUND_WHEN_HUNGRY': 'ya ya'
         }
 
-    def test_result_of_load_1(self):
+    def test_remove_none_field(self):
         dog_raw_data = {
             'name': None,
             'action': {
@@ -68,7 +75,7 @@ class TestBaseSchemaTransform:
             'ACTION_RUN': 'very fast',
         }
 
-    def test_result_of_load_list(self):
+    def test_result_of_transform_list_datas(self):
         dog_raw_data_list = [
             {
                 'name': None,
@@ -109,7 +116,7 @@ class TestBaseSchemaTransform:
         with pytest.raises(ValidationError):
             DogSchemaRequire.transform(dog_raw_data)
 
-    def test_require_list_field(self):
+    def test_require_field_in_transform_list_datas(self):
         dog_raw_data_list = [
             {
                 'name': 'Husky',
