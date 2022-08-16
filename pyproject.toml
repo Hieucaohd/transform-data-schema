@@ -21,13 +21,13 @@ dependencies = [
     "marshmallow",
     'tomli; python_version < "3.11"',
 ]
-requires-python = ">=3.9"
+requires-python = ">=3.8"
 
 [project.optional-dependencies]
 dev = ["black", "bumpver", "isort", "pip-tools", "pytest"]
 
 [project.urls]
-Homepage = "https://github.com/hieucaohd"
+Homepage = "https://github.com/Hieucaohd/transform-data-schema"
 
 [tool.bumpver]
 current_version = "2022.1001-alpha"
