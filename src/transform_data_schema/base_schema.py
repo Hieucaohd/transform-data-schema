@@ -50,18 +50,18 @@ class BaseSchemaTransform(Schema):
         cls,
         data: (
             typing.Mapping[str, typing.Any]
-            | typing.Iterable[typing.Mapping[str, typing.Any]]
+            or typing.Iterable[typing.Mapping[str, typing.Any]]
         ),
         *,
-        many: bool | None = False,
-        partial: bool | None = False,
-        unknown: str | None = None,
+        many: bool or None = False,
+        partial: bool or None = False,
+        unknown: str or None = None,
     ):
         instance = cls(many=many, partial=partial, unknown=unknown)
         return instance.load(data)
 
-    def dump(self, obj: typing.Any, *, many: bool | None = None):
+    def dump(self, obj: typing.Any, *, many: bool or None = None):
         raise Exception('Method not use.')
 
-    def dumps(self, obj: typing.Any, *args, many: bool | None = None, **kwargs):
+    def dumps(self, obj: typing.Any, *args, many: bool or None = None, **kwargs):
         raise Exception('Method not use')

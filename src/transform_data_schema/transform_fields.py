@@ -27,8 +27,8 @@ class DatetimeFromTimeStamp(fields.Field):
     def _deserialize(
             self,
             value: typing.Any,
-            attr: str | None,
-            data: typing.Mapping[str, typing.Any] | None,
+            attr: str or None,
+            data: typing.Mapping[str, typing.Any] or None,
             **kwargs,
     ):
         if value is None:
